@@ -1,4 +1,4 @@
-import { StrictMode, useState, type ReactNode } from "react";
+import { StrictMode, useEffect, useState, type ReactNode } from "react";
 import { createRoot } from "react-dom/client";
 import {
   ArrowDown,
@@ -13,6 +13,7 @@ import {
   MessageSquareText,
   MousePointer2,
   PenLine,
+  Table2,
   ShieldCheck,
   Sparkles,
   UsersRound,
@@ -118,6 +119,24 @@ function CheckoutButton({
 
 function App() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+
+  useEffect(() => {
+    const revealItems = document.querySelectorAll<HTMLElement>(".reveal");
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.12 },
+    );
+
+    revealItems.forEach((item) => observer.observe(item));
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <div className="page-shell">
@@ -238,7 +257,7 @@ function App() {
           </div>
         </section>
 
-        <section className="problem-section section-pad" id="problemas">
+        <section className="problem-section section-pad reveal" id="problemas">
           <div className="section-heading centered">
             <span className="section-kicker">O problema</span>
             <h2>Você passa por isso?</h2>
@@ -261,7 +280,7 @@ function App() {
           </div>
         </section>
 
-        <section className="kit-section section-pad" id="kit">
+        <section className="kit-section section-pad reveal" id="kit">
           <div className="kit-intro">
             <span className="section-kicker">O kit na prática</span>
             <h2>
@@ -290,7 +309,7 @@ function App() {
           </div>
         </section>
 
-        <section className="steps-section section-pad" id="como-funciona">
+        <section className="steps-section section-pad reveal" id="como-funciona">
           <div className="section-heading centered">
             <span className="section-kicker">Sem complicação</span>
             <h2>Como funciona</h2>
@@ -326,7 +345,7 @@ function App() {
           </div>
         </section>
 
-        <section className="audience-section section-pad">
+        <section className="audience-section section-pad reveal">
           <div className="audience-card">
             <div className="audience-copy">
               <span className="section-kicker">Para quem é</span>
@@ -367,7 +386,54 @@ function App() {
           </div>
         </section>
 
-        <section className="price-section section-pad">
+        <section className="demo-section section-pad reveal" id="demonstracao">
+          <div className="demo-heading section-heading">
+            <span className="section-kicker">Uma prévia do material</span>
+            <h2>Veja como o kit ajuda na rotina.</h2>
+            <p>
+              Exemplos ilustrativos do tipo de recurso que você encontra para
+              adaptar ao seu atendimento.
+            </p>
+          </div>
+          <div className="demo-grid">
+            <article className="demo-panel conversation-panel">
+              <div className="demo-panel-head">
+                <span className="demo-icon"><MessageSquareText size={18} /></span>
+                <div><strong>Conversa de atendimento</strong><small>Exemplo de mensagem</small></div>
+              </div>
+              <div className="demo-chat">
+                <span className="demo-label">EXEMPLO</span>
+                <div className="demo-bubble demo-bubble-client">Oi! Você pode me passar mais detalhes?</div>
+                <div className="demo-bubble demo-bubble-business">Claro! Vou te enviar as informações e, se quiser, te ajudo a escolher a melhor opção.</div>
+                <span className="demo-time">Mensagem pronta para adaptar · 10:24</span>
+              </div>
+            </article>
+            <article className="demo-panel prompt-panel">
+              <div className="demo-panel-head">
+                <span className="demo-icon coral-icon"><Sparkles size={18} /></span>
+                <div><strong>Prompt para adaptar</strong><small>Exemplo de uso com IA</small></div>
+              </div>
+              <div className="prompt-code">
+                <span className="prompt-mark">&gt;</span>
+                <p>Adapte esta mensagem para um tom mais próximo e objetivo, mantendo as informações principais.</p>
+              </div>
+              <div className="prompt-footer"><span>Pronto para copiar</span><Check size={15} /></div>
+            </article>
+            <article className="demo-panel sheet-panel">
+              <div className="demo-panel-head">
+                <span className="demo-icon amber-icon"><Table2 size={18} /></span>
+                <div><strong>Acompanhamento simples</strong><small>Exemplo de organização</small></div>
+              </div>
+              <div className="mini-sheet">
+                <div className="sheet-row sheet-head"><span>Cliente</span><span>Próximo passo</span></div>
+                <div className="sheet-row"><span>Marina <i>novo</i></span><span>Enviar orçamento</span></div>
+                <div className="sheet-row"><span>Rafael <i className="warm">retomar</i></span><span>Follow-up</span></div>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section className="price-section section-pad reveal">
           <div className="price-card">
             <div className="price-copy">
               <span className="section-kicker">Comece hoje</span>
@@ -394,7 +460,7 @@ function App() {
           </div>
         </section>
 
-        <section className="faq-section section-pad" id="duvidas">
+        <section className="faq-section section-pad reveal" id="duvidas">
           <div className="faq-layout">
             <div className="section-heading">
               <span className="section-kicker">Perguntas frequentes</span>
@@ -424,7 +490,7 @@ function App() {
           </div>
         </section>
 
-        <section className="final-cta section-pad">
+        <section className="final-cta section-pad reveal">
           <div className="final-cta-inner">
             <div className="final-symbol">
               <MessageCircle size={24} fill="currentColor" />
