@@ -20,7 +20,7 @@ import {
 } from "lucide-react";
 import "./styles.css";
 
-export const CHECKOUT_URL = "CHECKOUT_URL";
+export const CHECKOUT_URL = "https://pay.kiwify.com.br/u7UkvHZ";
 
 const problems = [
   {
